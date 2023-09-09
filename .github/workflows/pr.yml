@@ -35,3 +35,5 @@ jobs:
           npm install
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
           npm run lint >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          npm run build >> $GITHUB_STEP_SUMMARY
