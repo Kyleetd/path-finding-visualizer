@@ -37,3 +37,5 @@ jobs:
           npm run lint >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
           npm run build >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          npm run prettier >> $GITHUB_STEP_SUMMARY
