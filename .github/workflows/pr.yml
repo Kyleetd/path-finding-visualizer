@@ -1,0 +1,30 @@
+name: PR Checks
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - path-finding-visualizer/**
+      - .github/**
+  push:
+    branches:
+      - main
+    paths:
+      - path-finding-visualizer/**
+      - .github/**
+jobs:
+  pr-lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache-dependency-path: path-finding-visualizer/package-lock.json
+          cache: "npm"
+      - run: |
+        cd path-finding-visualizer 
+        npm install
+        echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+        npm run lint >> $GITHUB_STEP_SUMMARY
