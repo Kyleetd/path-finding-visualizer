@@ -16,15 +16,22 @@ jobs:
   pr-lint:
     name: Lint
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 20
-          cache-dependency-path: path-finding-visualizer/package-lock.json
-          cache: "npm"
-      - run: |
-        cd path-finding-visualizer 
-        npm install
-        echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
-        npm run lint >> $GITHUB_STEP_SUMMARY
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+
+      - name: Install dependencies
+        run: |
+          cd path-finding-visualizer
+          npm install
+      
+      - name: Lint Project
+        run: |
+          cd path-finding-visualizer 
+          npm install
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          npm run lint >> $GITHUB_STEP_SUMMARY
