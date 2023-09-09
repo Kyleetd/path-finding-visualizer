@@ -13,8 +13,6 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
-        with: 
-          path: path-finding-visualizer
 
       - name: Setup Node
         uses: actions/setup-node@v3
