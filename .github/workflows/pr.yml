@@ -28,7 +28,7 @@ jobs:
         run: |
           cd path-finding-visualizer
           npm install
-      
+
       - name: Lint Project
         run: |
           cd path-finding-visualizer 
@@ -37,5 +37,49 @@ jobs:
           npm run lint >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
           npm run build >> $GITHUB_STEP_SUMMARY
+
+  pr-format:
+    name: Formatter
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+
+      - name: Install dependencies
+        run: |
+          cd path-finding-visualizer
+          npm install
+
+      - name: Format Project
+        run: |
+          cd path-finding-visualizer 
+          npm install
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
           npm run prettier >> $GITHUB_STEP_SUMMARY
+
+  pr-test:
+    name: Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+
+      - name: Install dependencies
+        run: |
+          cd path-finding-visualizer
+          npm install
+
+      - name: Test Project
+        run: |
+          cd path-finding-visualizer 
+          npm install
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          npm run coverage >> $GITHUB_STEP_SUMMARY
