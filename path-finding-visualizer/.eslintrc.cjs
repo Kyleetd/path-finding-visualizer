@@ -14,7 +14,7 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
     project: './tsconfig.json',
-    tsconfigRootDir: __dirname
+    tsconfigRootDir: __dirname,
   },
   settings: {
     react: {
@@ -24,8 +24,8 @@ module.exports = {
       node: {
         paths: ['src'],
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
-      }
-    }
+      },
+    },
   },
   plugins: ['react-refresh', '@typescript-eslint'],
   rules: {
