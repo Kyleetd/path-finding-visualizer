@@ -1,5 +1,7 @@
+import CellGrid from './components/Grid';
+
 function App() {
-  return <></>;
+  return <CellGrid />;
 }
 
 export default App;
