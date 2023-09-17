@@ -1,7 +1,11 @@
 import { Box } from '@mui/material';
-import { useState } from 'react';
+import { FC, useState } from 'react';
 
-const Cell = () => {
+interface CellProps {
+  isMouseDown: boolean;
+}
+
+const Cell: FC<CellProps> = ({ isMouseDown }) => {
   // Sets initial color to purple
   const [color, setColor] = useState('purple');
 
@@ -15,18 +19,22 @@ const Cell = () => {
   };
 
   return (
-    <div onClick={() => nextColor()}>
-      <Box
-        sx={{
-          width: dimension,
-          height: dimension,
-          backgroundColor: color,
-          '&:hover': {
-            opacity: [0.9, 0.8, 0.7],
-          },
-        }}
-      />
-    </div>
+    <Box
+      onClick={() => nextColor()}
+      onMouseEnter={() => {
+        if (isMouseDown) {
+          nextColor();
+        }
+      }}
+      sx={{
+        width: dimension,
+        height: dimension,
+        backgroundColor: color,
+        '&:hover': {
+          opacity: [0.9, 0.8, 0.7],
+        },
+      }}
+    />
   );
 };
 

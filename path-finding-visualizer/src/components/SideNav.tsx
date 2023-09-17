@@ -10,13 +10,11 @@ const SideNav = () => {
       open
       PaperProps={{
         sx: {
-            width: SIDE_NAV_WIDTH,
-            backgroundColor: 'blue',
-        }
+          width: SIDE_NAV_WIDTH,
+          backgroundColor: 'blue',
+        },
       }}
-    >
-        
-    </Drawer>
+    ></Drawer>
   );
 };
 
