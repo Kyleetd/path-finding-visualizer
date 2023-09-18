@@ -1,30 +1,50 @@
 import { Grid } from '@mui/material';
 import Cell from './Cell';
-import { useState } from 'react';
+import { FC, useState } from 'react';
+import { CellObject } from '../types/grid-types';
+import { EditTypes } from '../types/edit-types';
 
-const CellGrid = () => {
+interface CellGridProps {
+  editState: EditTypes;
+}
+
+const CellGrid: FC<CellGridProps> = ({ editState }) => {
   const [mouseDown, setMouseDown] = useState<boolean>(false);
 
   window.addEventListener('mousedown', function () {
     setMouseDown(true);
-    console.log('mouse down');
   });
 
   window.addEventListener('mouseup', function () {
     setMouseDown(false);
-    console.log('mouse up');
   });
 
+  const changeCellCol = (row: number, col: number) => {
+    console.log(row, col);
+  };
+
   const createGrid = () => {
-    const grid = [];
+    const grid: CellObject[][] = [];
     const rows = 30;
     const columns = 40;
-    for (let i = 0; i < rows; i++) {
-      const row = [];
-      for (let j = 0; j < columns; j++) {
-        row.push(<Cell isMouseDown={mouseDown} />);
+    for (let row = 0; row < rows; row++) {
+      const currRow = [];
+      for (let column = 0; column < columns; column++) {
+        const cell: CellObject = {
+          type: 'empty',
+          cell: (
+            <Cell
+              isMouseDown={mouseDown}
+              type="empty"
+              updateCell={changeCellCol}
+              rowNum={row}
+              colNum={column}
+            />
+          ),
+        };
+        currRow.push(cell);
       }
-      grid.push(row);
+      grid.push(currRow);
     }
     return grid;
   };
@@ -50,13 +70,13 @@ const CellGrid = () => {
           role="row"
           key={rowIndex}
         >
-          {row.map((cell, cellIndex) => (
+          {row.map((cellObject, cellIndex) => (
             <Grid
               item
               role="cell"
               key={cellIndex}
             >
-              {cell}
+              {cellObject.cell}
             </Grid>
           ))}
         </Grid>

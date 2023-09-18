@@ -1,35 +1,46 @@
 import { Box } from '@mui/material';
 import { FC, useState } from 'react';
+import { CellTypes } from '../types/grid-types';
 
 interface CellProps {
   isMouseDown: boolean;
+  type: CellTypes;
+  updateCell: (row: number, col: number) => void;
+  rowNum: number;
+  colNum: number;
 }
 
-const Cell: FC<CellProps> = ({ isMouseDown }) => {
+const Cell: FC<CellProps> = ({ isMouseDown, type, updateCell, rowNum, colNum }) => {
   // Sets initial color to purple
-  const [color, setColor] = useState('purple');
-
-  const colors = ['purple', 'green', 'red', 'blue'];
   const dimension = 20;
 
-  const nextColor = () => {
-    const index = colors.indexOf(color);
-    const next = (index + 1) % colors.length;
-    setColor(colors[next]);
+  const getColorFromType = () => {
+    switch (type) {
+      case 'start':
+        return 'green';
+      case 'end':
+        return 'red';
+      case 'wall':
+        return 'black';
+      case 'empty':
+        return 'gray';
+      default:
+        return 'gray';
+    }
   };
 
   return (
     <Box
-      onClick={() => nextColor()}
-      onMouseEnter={() => {
-        if (isMouseDown) {
-          nextColor();
-        }
-      }}
+      onClick={() => updateCell(rowNum, colNum)}
+      // onMouseEnter={() => {
+      //   if (isMouseDown) {
+      //     nextColor();
+      //   }
+      // }}
       sx={{
         width: dimension,
         height: dimension,
-        backgroundColor: color,
+        backgroundColor: getColorFromType(),
         '&:hover': {
           opacity: [0.9, 0.8, 0.7],
         },
