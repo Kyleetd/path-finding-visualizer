@@ -2,34 +2,16 @@ import { Grid } from '@mui/material';
 import Cell from './Cell';
 import { useState } from 'react';
 
+export type Position = {
+  row: number;
+  col: number;
+};
+
 const CellGrid = () => {
-  const [mouseDown, setMouseDown] = useState<boolean>(false);
+  const [stringArray] = useState(new Array(30).fill(null).map(() => new Array(40).fill('n')));
 
-  window.addEventListener('mousedown', function () {
-    setMouseDown(true);
-    console.log('mouse down');
-  });
-
-  window.addEventListener('mouseup', function () {
-    setMouseDown(false);
-    console.log('mouse up');
-  });
-
-  const createGrid = () => {
-    const grid = [];
-    const rows = 30;
-    const columns = 40;
-    for (let i = 0; i < rows; i++) {
-      const row = [];
-      for (let j = 0; j < columns; j++) {
-        row.push(<Cell isMouseDown={mouseDown} />);
-      }
-      grid.push(row);
-    }
-    return grid;
-  };
-
-  const grid = createGrid();
+  const [start, setStart] = useState<Position | null>(null);
+  const [end, setEnd] = useState<Position | null>(null);
 
   return (
     <Grid
@@ -37,7 +19,7 @@ const CellGrid = () => {
       spacing={0.25}
       role="grid"
     >
-      {grid.map((row, rowIndex) => (
+      {stringArray.map((row, rowIndex) => (
         <Grid
           container
           item
@@ -50,13 +32,21 @@ const CellGrid = () => {
           role="row"
           key={rowIndex}
         >
-          {row.map((cell, cellIndex) => (
+          {row.map((_, cellIndex) => (
             <Grid
               item
               role="cell"
               key={cellIndex}
             >
-              {cell}
+              <Cell
+                rowNum={rowIndex}
+                colNum={cellIndex}
+                strArray={stringArray}
+                start={start}
+                setStart={setStart}
+                end={end}
+                setEnd={setEnd}
+              ></Cell>
             </Grid>
           ))}
         </Grid>
