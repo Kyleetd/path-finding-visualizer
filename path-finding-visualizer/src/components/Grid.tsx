@@ -32,7 +32,7 @@ const CellGrid = () => {
           role="row"
           key={rowIndex}
         >
-          {row.map((cell, cellIndex) => (
+          {row.map((_, cellIndex) => (
             <Grid
               item
               role="cell"
