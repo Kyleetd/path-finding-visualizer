@@ -1,55 +1,17 @@
 import { Grid } from '@mui/material';
 import Cell from './Cell';
-import { FC, useState } from 'react';
-import { CellObject } from '../types/grid-types';
-import { EditTypes } from '../types/edit-types';
+import { useState } from 'react';
 
-interface CellGridProps {
-  editState: EditTypes;
-}
+export type Position = {
+  row: number;
+  col: number;
+};
 
-const CellGrid: FC<CellGridProps> = ({ editState }) => {
-  const [mouseDown, setMouseDown] = useState<boolean>(false);
+const CellGrid = () => {
+  const [stringArray] = useState(new Array(30).fill(null).map(() => new Array(40).fill('n')));
 
-  window.addEventListener('mousedown', function () {
-    setMouseDown(true);
-  });
-
-  window.addEventListener('mouseup', function () {
-    setMouseDown(false);
-  });
-
-  const changeCellCol = (row: number, col: number) => {
-    console.log(row, col);
-  };
-
-  const createGrid = () => {
-    const grid: CellObject[][] = [];
-    const rows = 30;
-    const columns = 40;
-    for (let row = 0; row < rows; row++) {
-      const currRow = [];
-      for (let column = 0; column < columns; column++) {
-        const cell: CellObject = {
-          type: 'empty',
-          cell: (
-            <Cell
-              isMouseDown={mouseDown}
-              type="empty"
-              updateCell={changeCellCol}
-              rowNum={row}
-              colNum={column}
-            />
-          ),
-        };
-        currRow.push(cell);
-      }
-      grid.push(currRow);
-    }
-    return grid;
-  };
-
-  const grid = createGrid();
+  const [start, setStart] = useState<Position | null>(null);
+  const [end, setEnd] = useState<Position | null>(null);
 
   return (
     <Grid
@@ -57,7 +19,7 @@ const CellGrid: FC<CellGridProps> = ({ editState }) => {
       spacing={0.25}
       role="grid"
     >
-      {grid.map((row, rowIndex) => (
+      {stringArray.map((row, rowIndex) => (
         <Grid
           container
           item
@@ -70,13 +32,21 @@ const CellGrid: FC<CellGridProps> = ({ editState }) => {
           role="row"
           key={rowIndex}
         >
-          {row.map((cellObject, cellIndex) => (
+          {row.map((cell, cellIndex) => (
             <Grid
               item
               role="cell"
               key={cellIndex}
             >
-              {cellObject.cell}
+              <Cell
+                rowNum={rowIndex}
+                colNum={cellIndex}
+                strArray={stringArray}
+                start={start}
+                setStart={setStart}
+                end={end}
+                setEnd={setEnd}
+              ></Cell>
             </Grid>
           ))}
         </Grid>

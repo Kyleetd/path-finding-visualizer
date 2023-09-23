@@ -1,46 +1,100 @@
 import { Box } from '@mui/material';
-import { FC, useState } from 'react';
-import { CellTypes } from '../types/grid-types';
+import { FC, useContext, useEffect, useState } from 'react';
+import { EditStateContext } from '../App';
+import { Position } from './Grid';
 
 interface CellProps {
-  isMouseDown: boolean;
-  type: CellTypes;
-  updateCell: (row: number, col: number) => void;
   rowNum: number;
   colNum: number;
+  strArray: string[][];
+  start: Position | null;
+  setStart: React.Dispatch<React.SetStateAction<Position | null>>;
+  end: Position | null;
+  setEnd: React.Dispatch<React.SetStateAction<Position | null>>;
 }
 
-const Cell: FC<CellProps> = ({ isMouseDown, type, updateCell, rowNum, colNum }) => {
-  // Sets initial color to purple
+const Cell: FC<CellProps> = ({ rowNum, colNum, strArray, start, setStart, end, setEnd }) => {
+  const editState = useContext(EditStateContext);
+  const [color, setColor] = useState('gray');
+
   const dimension = 20;
 
-  const getColorFromType = () => {
-    switch (type) {
+  useEffect(() => {
+    if (start) {
+      if (color === 'lightgreen' && (start.row !== rowNum || start.col !== colNum)) {
+        setColor('gray');
+        console.log('start changed: ', start);
+      }
+    }
+  }, [start, colNum, color, rowNum]);
+
+  useEffect(() => {
+    if (end) {
+      if (color === 'red' && (end.row !== rowNum || end.col !== colNum)) {
+        setColor('gray');
+        console.log('end changed: ', end);
+      }
+    }
+  }, [end, colNum, color, rowNum]);
+
+  const updateColorOnClick = () => {
+    switch (editState) {
       case 'start':
-        return 'green';
+        if (color === 'gray') {
+          setStart({
+            row: rowNum,
+            col: colNum,
+          });
+          setColor('lightgreen');
+          strArray[rowNum][colNum] = 's';
+        }
+        break;
       case 'end':
-        return 'red';
-      case 'wall':
-        return 'black';
-      case 'empty':
-        return 'gray';
+        if (color === 'gray') {
+          setEnd({
+            row: rowNum,
+            col: colNum,
+          });
+          setColor('red');
+          strArray[rowNum][colNum] = 'e';
+        }
+        break;
+      case 'draw wall':
+        setColor('purple');
+        strArray[rowNum][colNum] = 'w';
+        break;
+      case 'erase wall':
+        setColor('gray');
+        strArray[rowNum][colNum] = 'n';
+        break;
       default:
-        return 'gray';
+        throw new Error('Invalid Edit State');
+    }
+  };
+  const updateColorOnEnter = () => {
+    if (editState === 'draw wall') {
+      if (color === 'gray') {
+        setColor('purple');
+        strArray[rowNum][colNum] = 'w';
+      }
+    } else if (editState === 'erase wall') {
+      if (color === 'purple') {
+        setColor('gray');
+        strArray[rowNum][colNum] = 'n';
+      }
     }
   };
 
   return (
     <Box
-      onClick={() => updateCell(rowNum, colNum)}
-      // onMouseEnter={() => {
-      //   if (isMouseDown) {
-      //     nextColor();
-      //   }
-      // }}
+      onClick={() => updateColorOnClick()}
+      onMouseEnter={() => {
+        updateColorOnEnter();
+      }}
       sx={{
         width: dimension,
         height: dimension,
-        backgroundColor: getColorFromType(),
+        backgroundColor: color,
         '&:hover': {
           opacity: [0.9, 0.8, 0.7],
         },
