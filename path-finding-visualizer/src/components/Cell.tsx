@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import { FC, useContext, useEffect, useState } from 'react';
 import { EditStateContext } from '../App';
-import { Position } from './Grid';
+import { Position } from './CellGridDraw';
 
 interface CellProps {
   rowNum: number;
