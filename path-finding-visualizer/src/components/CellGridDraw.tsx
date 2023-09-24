@@ -7,7 +7,7 @@ export type Position = {
   col: number;
 };
 
-const CellGrid = () => {
+const CellGridDraw = () => {
   const [stringArray] = useState(new Array(30).fill(null).map(() => new Array(40).fill('n')));
 
   const [start, setStart] = useState<Position | null>(null);
@@ -55,4 +55,4 @@ const CellGrid = () => {
   );
 };
 
-export default CellGrid;
+export default CellGridDraw;
