@@ -1,15 +1,18 @@
 import { Grid } from '@mui/material';
-import Cell from './Cell';
-import { useState } from 'react';
+import CellDraw from './CellDraw';
+import { FC, useState } from 'react';
+import { DrawingCellTypes } from '../types/cell-types';
 
 export type Position = {
   row: number;
   col: number;
 };
 
-const CellGridDraw = () => {
-  const [stringArray] = useState(new Array(30).fill(null).map(() => new Array(40).fill('n')));
+interface CellArrayDrawProps {
+  drawingArray: DrawingCellTypes[][];
+}
 
+const CellArrayDraw: FC<CellArrayDrawProps> = ({ drawingArray }) => {
   const [start, setStart] = useState<Position | null>(null);
   const [end, setEnd] = useState<Position | null>(null);
 
@@ -19,7 +22,7 @@ const CellGridDraw = () => {
       spacing={0.25}
       role="grid"
     >
-      {stringArray.map((row, rowIndex) => (
+      {drawingArray.map((row, rowIndex) => (
         <Grid
           container
           item
@@ -38,15 +41,15 @@ const CellGridDraw = () => {
               role="cell"
               key={cellIndex}
             >
-              <Cell
+              <CellDraw
                 rowNum={rowIndex}
                 colNum={cellIndex}
-                strArray={stringArray}
+                drawingArray={drawingArray}
                 start={start}
                 setStart={setStart}
                 end={end}
                 setEnd={setEnd}
-              ></Cell>
+              ></CellDraw>
             </Grid>
           ))}
         </Grid>
@@ -55,4 +58,4 @@ const CellGridDraw = () => {
   );
 };
 
-export default CellGridDraw;
+export default CellArrayDraw;

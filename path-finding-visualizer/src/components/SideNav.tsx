@@ -1,17 +1,25 @@
 import { Drawer, Stack, ToggleButton, ToggleButtonGroup, Button } from '@mui/material';
 import { EditTypes } from '../types/edit-types';
 import { FC } from 'react';
+import { AppStates } from '../types/app-state-types';
 
 export const SIDE_NAV_WIDTH = 300;
 
 interface SideNavProps {
   editState: EditTypes;
   setEditState: React.Dispatch<React.SetStateAction<EditTypes>>;
-  startState: boolean;
-  setStartState: React.Dispatch<React.SetStateAction<boolean>>;
+  appState: AppStates;
+  setAppState: React.Dispatch<React.SetStateAction<AppStates>>;
+  setReset: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const SideNav: FC<SideNavProps> = ({ editState, setEditState, startState, setStartState }) => {
+const SideNav: FC<SideNavProps> = ({
+  editState,
+  setEditState,
+  appState,
+  setAppState,
+  setReset,
+}) => {
   const handleChange = (_: React.MouseEvent<HTMLElement>, newEditState: EditTypes) => {
     setEditState(newEditState);
   };
@@ -25,22 +33,26 @@ const SideNav: FC<SideNavProps> = ({ editState, setEditState, startState, setSta
         sx: {
           width: SIDE_NAV_WIDTH,
           padding: '25px',
-          backgroundColor: 'lightgray',
+          backgroundColor: 'gray',
         },
       }}
     >
       <Stack spacing={'10px'}>
         <Button
-          variant="outlined"
+          variant="contained"
+          disabled={appState !== 'draw'}
           onClick={() => {
-            setStartState(!startState);
+            setAppState('visualize');
           }}
         >
-          {startState ? <>Stop</> : <>Start</>}
+          Start
         </Button>
         <Button
-          variant="outlined"
-          disabled={startState}
+          variant="contained"
+          onClick={() => {
+            setReset(true);
+            setAppState('draw');
+          }}
         >
           Reset
         </Button>
@@ -50,7 +62,7 @@ const SideNav: FC<SideNavProps> = ({ editState, setEditState, startState, setSta
           exclusive
           onChange={handleChange}
           aria-label="Platform"
-          disabled={startState}
+          disabled={appState !== 'draw'}
         >
           <ToggleButton value="start">Add Start</ToggleButton>
           <ToggleButton value="end">Add End</ToggleButton>

@@ -1,29 +1,55 @@
 import { Box } from '@mui/material';
 import { FC, useContext, useEffect, useState } from 'react';
 import { EditStateContext } from '../App';
-import { Position } from './CellGridDraw';
+import { Position } from './CellArrayDraw';
+import { DrawingCellTypes } from '../types/cell-types';
 
-interface CellProps {
+interface CellDrawProps {
   rowNum: number;
   colNum: number;
-  strArray: string[][];
+  drawingArray: DrawingCellTypes[][];
   start: Position | null;
   setStart: React.Dispatch<React.SetStateAction<Position | null>>;
   end: Position | null;
   setEnd: React.Dispatch<React.SetStateAction<Position | null>>;
 }
 
-const Cell: FC<CellProps> = ({ rowNum, colNum, strArray, start, setStart, end, setEnd }) => {
-  const editState = useContext(EditStateContext);
-  const [color, setColor] = useState('gray');
+const getColor = (cellType: DrawingCellTypes) => {
+  switch (cellType) {
+    case 'empty':
+      return 'gray';
+    case 'wall':
+      return 'purple';
+    case 'start':
+      return 'lightgreen';
+    case 'end':
+      return 'red';
+    default:
+      throw new Error('Invalid Edit State');
+  }
+};
 
+const CellDraw: FC<CellDrawProps> = ({
+  rowNum,
+  colNum,
+  drawingArray,
+  start,
+  setStart,
+  end,
+  setEnd,
+}) => {
+  const editState = useContext(EditStateContext);
+  const [color, setColor] = useState(getColor(drawingArray[rowNum][colNum]));
   const dimension = 20;
+
+  useEffect(() => {
+    setColor(getColor(drawingArray[rowNum][colNum]));
+  }, [drawingArray, setColor, rowNum, colNum]);
 
   useEffect(() => {
     if (start) {
       if (color === 'lightgreen' && (start.row !== rowNum || start.col !== colNum)) {
         setColor('gray');
-        console.log('start changed: ', start);
       }
     }
   }, [start, colNum, color, rowNum]);
@@ -32,7 +58,6 @@ const Cell: FC<CellProps> = ({ rowNum, colNum, strArray, start, setStart, end, s
     if (end) {
       if (color === 'red' && (end.row !== rowNum || end.col !== colNum)) {
         setColor('gray');
-        console.log('end changed: ', end);
       }
     }
   }, [end, colNum, color, rowNum]);
@@ -46,7 +71,7 @@ const Cell: FC<CellProps> = ({ rowNum, colNum, strArray, start, setStart, end, s
             col: colNum,
           });
           setColor('lightgreen');
-          strArray[rowNum][colNum] = 's';
+          drawingArray[rowNum][colNum] = 'start';
         }
         break;
       case 'end':
@@ -56,16 +81,16 @@ const Cell: FC<CellProps> = ({ rowNum, colNum, strArray, start, setStart, end, s
             col: colNum,
           });
           setColor('red');
-          strArray[rowNum][colNum] = 'e';
+          drawingArray[rowNum][colNum] = 'end';
         }
         break;
       case 'draw wall':
         setColor('purple');
-        strArray[rowNum][colNum] = 'w';
+        drawingArray[rowNum][colNum] = 'wall';
         break;
       case 'erase wall':
         setColor('gray');
-        strArray[rowNum][colNum] = 'n';
+        drawingArray[rowNum][colNum] = 'empty';
         break;
       default:
         throw new Error('Invalid Edit State');
@@ -75,12 +100,12 @@ const Cell: FC<CellProps> = ({ rowNum, colNum, strArray, start, setStart, end, s
     if (editState === 'draw wall') {
       if (color === 'gray') {
         setColor('purple');
-        strArray[rowNum][colNum] = 'w';
+        drawingArray[rowNum][colNum] = 'wall';
       }
     } else if (editState === 'erase wall') {
       if (color === 'purple') {
         setColor('gray');
-        strArray[rowNum][colNum] = 'n';
+        drawingArray[rowNum][colNum] = 'empty';
       }
     }
   };
@@ -103,4 +128,4 @@ const Cell: FC<CellProps> = ({ rowNum, colNum, strArray, start, setStart, end, s
   );
 };
 
-export default Cell;
+export default CellDraw;
