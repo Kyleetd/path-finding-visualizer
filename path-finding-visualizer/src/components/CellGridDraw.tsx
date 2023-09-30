@@ -1,5 +1,5 @@
 import { Grid } from '@mui/material';
-import Cell from './Cell';
+import CellDraw from './CellDraw';
 import { useState } from 'react';
 
 export type Position = {
@@ -38,15 +38,15 @@ const CellGridDraw = () => {
               role="cell"
               key={cellIndex}
             >
-              <Cell
+              <CellDraw
                 rowNum={rowIndex}
                 colNum={cellIndex}
-                strArray={stringArray}
+                drawingArray={stringArray}
                 start={start}
                 setStart={setStart}
                 end={end}
                 setEnd={setEnd}
-              ></Cell>
+              ></CellDraw>
             </Grid>
           ))}
         </Grid>
