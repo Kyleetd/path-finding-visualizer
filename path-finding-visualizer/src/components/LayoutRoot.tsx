@@ -8,6 +8,7 @@ const LayoutRoot = styled('div')(() => ({
   marginLeft: SIDE_NAV_WIDTH,
   alignItems: 'center',
   justifyContent: 'center',
+  backgroundColor: 'lightgrey',
 }));
 
 export default LayoutRoot;
