@@ -21,7 +21,7 @@ export const breadthFirstSearch = async (
       const cameFrom: { [key: string]: string } = {};
 
       while (queue.length > 0) {
-        const cell: Position = queue.shift();
+        const cell: Position = queue.shift() as Position;
 
         // mark cell as current (if not start or end)
         if (

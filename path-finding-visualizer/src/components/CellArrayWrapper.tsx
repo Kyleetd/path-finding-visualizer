@@ -66,22 +66,22 @@ const CellArrayWrapper: FC<CellArrayWrapperProps> = ({ appState, reset, setReset
         await breadthFirstSearch(
           createVisualizationArray(drawingArray),
           setVisualizationArray,
-          start,
-          end,
+          start as Position,
+          end as Position,
         );
         await delay(2000);
         await depthFirstSearch(
           createVisualizationArray(drawingArray),
           setVisualizationArray,
-          start,
-          end,
+          start as Position,
+          end as Position,
         );
         await delay(2000);
         await bestFirstSearch(
           createVisualizationArray(drawingArray),
           setVisualizationArray,
-          start,
-          end,
+          start as Position,
+          end as Position,
         );
       }
     };

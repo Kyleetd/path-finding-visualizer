@@ -21,7 +21,7 @@ export const depthFirstSearch = async (
       const cameFrom: { [key: string]: string } = {};
 
       while (stack.length > 0) {
-        const cell: Position = stack.pop();
+        const cell: Position = stack.pop() as Position;
 
         // mark cell as current (if not start or end)
         if (
