@@ -16,6 +16,14 @@ const getCellColor = (cellType: string): string => {
     case 'end':
       return 'red';
     case 'wall':
+      return 'black';
+    case 'openset':
+      return 'lightblue';
+    case 'searched':
+      return 'blue';
+    case 'path':
+      return 'orange';
+    case 'current':
       return 'purple';
     default:
       return 'gray';
@@ -26,7 +34,7 @@ const CellArrayVisualize: FC<CellArrayVisualizeProps> = ({ visualizationArray })
   return (
     <Grid
       container
-      spacing={0.25}
+      // spacing={0.25}
       role="grid"
     >
       {visualizationArray.map((row, rowIndex) => (
@@ -34,7 +42,7 @@ const CellArrayVisualize: FC<CellArrayVisualizeProps> = ({ visualizationArray })
           container
           item
           xs={12}
-          spacing={0.25}
+          // spacing={0.25}
           sx={{
             display: 'flex',
             justifyContent: 'center',

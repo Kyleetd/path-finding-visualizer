@@ -19,7 +19,7 @@ const getColor = (cellType: DrawingCellTypes) => {
     case 'empty':
       return 'gray';
     case 'wall':
-      return 'purple';
+      return 'black';
     case 'start':
       return 'lightgreen';
     case 'end':
@@ -40,7 +40,7 @@ const CellDraw: FC<CellDrawProps> = ({
 }) => {
   const editState = useContext(EditStateContext);
   const [color, setColor] = useState(getColor(drawingArray[rowNum][colNum]));
-  const dimension = 20;
+  const dimension = 30;
 
   useEffect(() => {
     setColor(getColor(drawingArray[rowNum][colNum]));
@@ -50,17 +50,19 @@ const CellDraw: FC<CellDrawProps> = ({
     if (start) {
       if (color === 'lightgreen' && (start.row !== rowNum || start.col !== colNum)) {
         setColor('gray');
+        drawingArray[rowNum][colNum] = 'empty';
       }
     }
-  }, [start, colNum, color, rowNum]);
+  }, [start, colNum, color, rowNum, drawingArray]);
 
   useEffect(() => {
     if (end) {
       if (color === 'red' && (end.row !== rowNum || end.col !== colNum)) {
         setColor('gray');
+        drawingArray[rowNum][colNum] = 'empty';
       }
     }
-  }, [end, colNum, color, rowNum]);
+  }, [end, colNum, color, rowNum, drawingArray]);
 
   const updateColorOnClick = () => {
     switch (editState) {
@@ -85,7 +87,7 @@ const CellDraw: FC<CellDrawProps> = ({
         }
         break;
       case 'draw wall':
-        setColor('purple');
+        setColor('black');
         drawingArray[rowNum][colNum] = 'wall';
         break;
       case 'erase wall':
@@ -99,11 +101,11 @@ const CellDraw: FC<CellDrawProps> = ({
   const updateColorOnEnter = () => {
     if (editState === 'draw wall') {
       if (color === 'gray') {
-        setColor('purple');
+        setColor('black');
         drawingArray[rowNum][colNum] = 'wall';
       }
     } else if (editState === 'erase wall') {
-      if (color === 'purple') {
+      if (color === 'black') {
         setColor('gray');
         drawingArray[rowNum][colNum] = 'empty';
       }

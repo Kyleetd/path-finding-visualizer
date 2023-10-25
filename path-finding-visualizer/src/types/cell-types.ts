@@ -7,7 +7,8 @@ export type DrawingCellTypes = Start | End | Wall | Empty;
 type Searched = 'searched';
 type OpenSet = 'openset';
 type Path = 'path';
-export type VisualizationCellTypes = DrawingCellTypes | Searched | OpenSet | Path;
+type Current = 'current';
+export type VisualizationCellTypes = DrawingCellTypes | Searched | OpenSet | Path | Current;
 
 export type VisualizationCellObject = {
   visualizationCellType: VisualizationCellTypes;
