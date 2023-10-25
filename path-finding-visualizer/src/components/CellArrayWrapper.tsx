@@ -40,7 +40,7 @@ const createVisualizationArray = (
 };
 
 const CellArrayWrapper: FC<CellArrayWrapperProps> = ({ appState, reset, setReset }) => {
-  const [drawingArray, setDrawingArray] = useState<DrawingCellTypes[][]>(createDrawingArray());
+  const [drawingArray] = useState<DrawingCellTypes[][]>(createDrawingArray());
   const [visualizationArray, setVisualizationArray] = useState<VisualizationCellObject[][]>([]);
   const [start, setStart] = useState<Position | null>(null);
   const [end, setEnd] = useState<Position | null>(null);
@@ -87,7 +87,7 @@ const CellArrayWrapper: FC<CellArrayWrapperProps> = ({ appState, reset, setReset
     };
 
     runAlgorithms();
-  }, [visualizationArray]);
+  }, [appState, drawingArray, end, running, start, visualizationArray]);
 
   return (
     <>

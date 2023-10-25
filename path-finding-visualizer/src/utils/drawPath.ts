@@ -13,6 +13,7 @@ export const drawPath = async (
 ) => {
   let currentPositionString = stringifyPosition(end);
   const startPositionString = stringifyPosition(start);
+  // eslint-disable-next-line no-constant-condition
   while (true) {
     // get the cell currentPositionString came from
     currentPositionString = cameFrom[currentPositionString];
