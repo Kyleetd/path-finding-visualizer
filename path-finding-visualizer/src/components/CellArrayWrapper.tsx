@@ -1,9 +1,13 @@
 import { FC, useEffect, useState } from 'react';
-import CellArrayDraw from './CellArrayDraw';
+import CellArrayDraw, { Position } from './CellArrayDraw';
 import { DrawingCellTypes, VisualizationCellObject } from '../types/cell-types';
 import CellArrayVisualize from './CellArrayVisualize';
 import { AppStates } from '../types/app-state-types';
 import { v4 as uuidv4 } from 'uuid';
+import { breadthFirstSearch } from '../path-finding-algorithms/breadth-first-search';
+import { depthFirstSearch } from '../path-finding-algorithms/depth-first-search';
+import { delay } from '../utils/delay';
+import { bestFirstSearch } from '../path-finding-algorithms/best-first-search';
 
 interface CellArrayWrapperProps {
   appState: AppStates;
@@ -12,7 +16,7 @@ interface CellArrayWrapperProps {
 }
 
 const createDrawingArray = (): DrawingCellTypes[][] => {
-  return new Array(30).fill(null).map(() => new Array(40).fill('empty'));
+  return new Array(25).fill(null).map(() => new Array(35).fill('empty'));
 };
 
 const createVisualizationArray = (
@@ -36,14 +40,16 @@ const createVisualizationArray = (
 };
 
 const CellArrayWrapper: FC<CellArrayWrapperProps> = ({ appState, reset, setReset }) => {
-  const [drawingArray, setDrawingArray] = useState<DrawingCellTypes[][]>(createDrawingArray());
+  const [drawingArray] = useState<DrawingCellTypes[][]>(createDrawingArray());
   const [visualizationArray, setVisualizationArray] = useState<VisualizationCellObject[][]>([]);
+  const [start, setStart] = useState<Position | null>(null);
+  const [end, setEnd] = useState<Position | null>(null);
+
+  const [running, setRunning] = useState<boolean>(false);
 
   useEffect(() => {
     if (reset) {
-      setDrawingArray(createDrawingArray());
-      setVisualizationArray([]);
-      setReset(false);
+      window.location.reload();
     }
   }, [reset, setReset]);
 
@@ -53,9 +59,47 @@ const CellArrayWrapper: FC<CellArrayWrapperProps> = ({ appState, reset, setReset
     }
   }, [appState, drawingArray]);
 
+  useEffect(() => {
+    const runAlgorithms = async () => {
+      if (appState === 'visualize' && visualizationArray.length > 0 && !running) {
+        setRunning(true);
+        await breadthFirstSearch(
+          createVisualizationArray(drawingArray),
+          setVisualizationArray,
+          start as Position,
+          end as Position,
+        );
+        await delay(2000);
+        await depthFirstSearch(
+          createVisualizationArray(drawingArray),
+          setVisualizationArray,
+          start as Position,
+          end as Position,
+        );
+        await delay(2000);
+        await bestFirstSearch(
+          createVisualizationArray(drawingArray),
+          setVisualizationArray,
+          start as Position,
+          end as Position,
+        );
+      }
+    };
+
+    runAlgorithms();
+  }, [appState, drawingArray, end, running, start, visualizationArray]);
+
   return (
     <>
-      {appState === 'draw' && <CellArrayDraw drawingArray={drawingArray}></CellArrayDraw>}
+      {appState === 'draw' && (
+        <CellArrayDraw
+          drawingArray={drawingArray}
+          start={start}
+          setStart={setStart}
+          end={end}
+          setEnd={setEnd}
+        ></CellArrayDraw>
+      )}
       {appState === 'visualize' && (
         <CellArrayVisualize visualizationArray={visualizationArray}></CellArrayVisualize>
       )}

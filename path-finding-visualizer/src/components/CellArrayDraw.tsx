@@ -1,6 +1,6 @@
 import { Grid } from '@mui/material';
 import CellDraw from './CellDraw';
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import { DrawingCellTypes } from '../types/cell-types';
 
 export type Position = {
@@ -10,16 +10,17 @@ export type Position = {
 
 interface CellArrayDrawProps {
   drawingArray: DrawingCellTypes[][];
+  start: Position | null;
+  setStart: React.Dispatch<React.SetStateAction<Position | null>>;
+  end: Position | null;
+  setEnd: React.Dispatch<React.SetStateAction<Position | null>>;
 }
 
-const CellArrayDraw: FC<CellArrayDrawProps> = ({ drawingArray }) => {
-  const [start, setStart] = useState<Position | null>(null);
-  const [end, setEnd] = useState<Position | null>(null);
-
+const CellArrayDraw: FC<CellArrayDrawProps> = ({ drawingArray, start, setStart, end, setEnd }) => {
   return (
     <Grid
       container
-      spacing={0.25}
+      // spacing={0.25}
       role="grid"
     >
       {drawingArray.map((row, rowIndex) => (
@@ -27,7 +28,7 @@ const CellArrayDraw: FC<CellArrayDrawProps> = ({ drawingArray }) => {
           container
           item
           xs={12}
-          spacing={0.25}
+          // spacing={0.25}
           sx={{
             display: 'flex',
             justifyContent: 'center',
