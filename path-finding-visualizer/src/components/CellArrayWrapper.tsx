@@ -11,8 +11,10 @@ import { bestFirstSearch } from '../path-finding-algorithms/best-first-search';
 
 interface CellArrayWrapperProps {
   appState: AppStates;
+  setAppState: React.Dispatch<React.SetStateAction<AppStates>>;
   reset: boolean;
   setReset: React.Dispatch<React.SetStateAction<boolean>>;
+  setError: React.Dispatch<React.SetStateAction<Error | null>>;
 }
 
 const createDrawingArray = (): DrawingCellTypes[][] => {
@@ -39,12 +41,17 @@ const createVisualizationArray = (
   return visualizationArray;
 };
 
-const CellArrayWrapper: FC<CellArrayWrapperProps> = ({ appState, reset, setReset }) => {
+const CellArrayWrapper: FC<CellArrayWrapperProps> = ({
+  appState,
+  setAppState,
+  reset,
+  setReset,
+  setError,
+}) => {
   const [drawingArray] = useState<DrawingCellTypes[][]>(createDrawingArray());
   const [visualizationArray, setVisualizationArray] = useState<VisualizationCellObject[][]>([]);
   const [start, setStart] = useState<Position | null>(null);
   const [end, setEnd] = useState<Position | null>(null);
-
   const [running, setRunning] = useState<boolean>(false);
 
   useEffect(() => {
@@ -55,9 +62,14 @@ const CellArrayWrapper: FC<CellArrayWrapperProps> = ({ appState, reset, setReset
 
   useEffect(() => {
     if (appState === 'visualize') {
+      if (!start || !end) {
+        setError(Error('Select Start and End positions.'));
+        setAppState('draw');
+        return;
+      }
       setVisualizationArray(createVisualizationArray(drawingArray));
     }
-  }, [appState, drawingArray]);
+  }, [appState, drawingArray, end, setAppState, setError, start]);
 
   useEffect(() => {
     const runAlgorithms = async () => {

@@ -11,6 +11,7 @@ function App() {
   const [editState, setEditState] = useState<EditTypes>('start');
   const [appState, setAppState] = useState<AppStates>('draw');
   const [reset, setReset] = useState<boolean>(false);
+  const [error, setError] = useState<Error | null>(null);
 
   return (
     <>
@@ -20,13 +21,17 @@ function App() {
         appState={appState}
         setAppState={setAppState}
         setReset={setReset}
+        error={error}
+        setError={setError}
       />
       <LayoutRoot>
         <EditStateContext.Provider value={editState}>
           <CellArrayWrapper
             appState={appState}
+            setAppState={setAppState}
             reset={reset}
             setReset={setReset}
+            setError={setError}
           />
         </EditStateContext.Provider>
       </LayoutRoot>
