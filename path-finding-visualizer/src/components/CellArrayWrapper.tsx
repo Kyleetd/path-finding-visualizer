@@ -52,6 +52,7 @@ const CellArrayWrapper: FC<CellArrayWrapperProps> = ({
   const [visualizationArray, setVisualizationArray] = useState<VisualizationCellObject[][]>([]);
   const [start, setStart] = useState<Position | null>(null);
   const [end, setEnd] = useState<Position | null>(null);
+
   const [running, setRunning] = useState<boolean>(false);
 
   useEffect(() => {
@@ -70,6 +71,36 @@ const CellArrayWrapper: FC<CellArrayWrapperProps> = ({
       setVisualizationArray(createVisualizationArray(drawingArray));
     }
   }, [appState, drawingArray, end, setAppState, setError, start]);
+
+  useEffect(() => {
+    const runAlgorithms = async () => {
+      if (appState === 'visualize' && visualizationArray.length > 0 && !running) {
+        setRunning(true);
+        await breadthFirstSearch(
+          createVisualizationArray(drawingArray),
+          setVisualizationArray,
+          start as Position,
+          end as Position,
+        );
+        await delay(2000);
+        await depthFirstSearch(
+          createVisualizationArray(drawingArray),
+          setVisualizationArray,
+          start as Position,
+          end as Position,
+        );
+        await delay(2000);
+        await bestFirstSearch(
+          createVisualizationArray(drawingArray),
+          setVisualizationArray,
+          start as Position,
+          end as Position,
+        );
+      }
+    };
+
+    runAlgorithms();
+  }, [appState, drawingArray, end, running, start, visualizationArray]);
 
   useEffect(() => {
     const runAlgorithms = async () => {
