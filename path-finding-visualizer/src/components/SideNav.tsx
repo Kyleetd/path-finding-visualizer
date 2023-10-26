@@ -1,6 +1,6 @@
-import { Drawer, Stack, ToggleButton, ToggleButtonGroup, Button } from '@mui/material';
+import { Drawer, Stack, ToggleButton, ToggleButtonGroup, Button, Alert } from '@mui/material';
 import { EditTypes } from '../types/edit-types';
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { AppStates } from '../types/app-state-types';
 
 export const SIDE_NAV_WIDTH = 300;
@@ -11,6 +11,8 @@ interface SideNavProps {
   appState: AppStates;
   setAppState: React.Dispatch<React.SetStateAction<AppStates>>;
   setReset: React.Dispatch<React.SetStateAction<boolean>>;
+  error: Error | null;
+  setError: React.Dispatch<React.SetStateAction<Error | null>>;
 }
 
 const SideNav: FC<SideNavProps> = ({
@@ -19,7 +21,16 @@ const SideNav: FC<SideNavProps> = ({
   appState,
   setAppState,
   setReset,
+  error,
+  setError,
 }) => {
+  useEffect(() => {
+    if (error) {
+      setTimeout(() => {
+        setError(null);
+      }, 3000);
+    }
+  }, [error, setError]);
   const handleChange = (_: React.MouseEvent<HTMLElement>, newEditState: EditTypes) => {
     setEditState(newEditState);
   };
@@ -38,11 +49,24 @@ const SideNav: FC<SideNavProps> = ({
       }}
     >
       <Stack spacing={'10px'}>
+        {error && (
+          <Alert
+            severity="error"
+            sx={{
+              height: '36px',
+            }}
+          >
+            {error.message}
+          </Alert>
+        )}
         <Button
           variant="contained"
           disabled={appState !== 'draw'}
           onClick={() => {
             setAppState('visualize');
+          }}
+          sx={{
+            height: '48px',
           }}
         >
           Start
@@ -52,6 +76,9 @@ const SideNav: FC<SideNavProps> = ({
           onClick={() => {
             setReset(true);
             setAppState('draw');
+          }}
+          sx={{
+            height: '48px',
           }}
         >
           Reset
@@ -63,6 +90,9 @@ const SideNav: FC<SideNavProps> = ({
           onChange={handleChange}
           aria-label="Platform"
           disabled={appState !== 'draw'}
+          sx={{
+            height: '48px',
+          }}
         >
           <ToggleButton value="start">Add Start</ToggleButton>
           <ToggleButton value="end">Add End</ToggleButton>
