@@ -1,7 +1,17 @@
-import { Drawer, Stack, ToggleButton, ToggleButtonGroup, Button, Alert } from '@mui/material';
+import {
+  Drawer,
+  Stack,
+  ToggleButton,
+  ToggleButtonGroup,
+  Button,
+  Alert,
+  Divider,
+  Grid,
+} from '@mui/material';
 import { EditTypes } from '../types/edit-types';
 import { FC, useEffect } from 'react';
 import { AppStates } from '../types/app-state-types';
+import { AlgorithmResultObject, Algorithms } from '../types/algorithm-result';
 
 export const SIDE_NAV_WIDTH = 300;
 
@@ -13,6 +23,9 @@ interface SideNavProps {
   setReset: React.Dispatch<React.SetStateAction<boolean>>;
   error: Error | null;
   setError: React.Dispatch<React.SetStateAction<Error | null>>;
+  algorithmResults: AlgorithmResultObject[];
+  selectedAlgorithm: Algorithms | undefined;
+  setSelectedAlgorithm: React.Dispatch<React.SetStateAction<Algorithms | undefined>>;
 }
 
 const SideNav: FC<SideNavProps> = ({
@@ -23,6 +36,9 @@ const SideNav: FC<SideNavProps> = ({
   setReset,
   error,
   setError,
+  algorithmResults,
+  selectedAlgorithm,
+  setSelectedAlgorithm,
 }) => {
   useEffect(() => {
     if (error) {
@@ -99,6 +115,67 @@ const SideNav: FC<SideNavProps> = ({
           <ToggleButton value="draw wall">Draw Wall</ToggleButton>
           <ToggleButton value="erase wall">Erase Wall</ToggleButton>
         </ToggleButtonGroup>
+        {algorithmResults.length > 0 && <Divider />}
+        {algorithmResults.map((algorithmResult, index) => (
+          <Button
+            variant="contained"
+            onClick={() => {
+              setSelectedAlgorithm(algorithmResult.algorithmName);
+            }}
+            disabled={appState !== 'analyze'}
+            sx={{
+              height: '48px',
+              '&:disabled': {
+                color: 'white',
+              },
+            }}
+            style={
+              algorithmResult.algorithmName === selectedAlgorithm
+                ? { backgroundColor: '#000080' }
+                : {}
+            }
+            key={algorithmResult.key}
+          >
+            <Grid
+              container
+              height="100%"
+            >
+              <Grid
+                item
+                xs={1}
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                {index + 1}.
+              </Grid>
+              <Grid
+                item
+                xs={9}
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                {algorithmResult.algorithmName}:
+              </Grid>
+              <Grid
+                item
+                xs={2}
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                {algorithmResult.time ? <>{algorithmResult.time} s</> : <>-</>}
+              </Grid>
+            </Grid>
+          </Button>
+        ))}
       </Stack>
     </Drawer>
   );
