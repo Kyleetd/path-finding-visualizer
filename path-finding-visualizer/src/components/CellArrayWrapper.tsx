@@ -8,6 +8,7 @@ import { breadthFirstSearch } from '../path-finding-algorithms/breadth-first-sea
 import { depthFirstSearch } from '../path-finding-algorithms/depth-first-search';
 import { delay } from '../utils/delay';
 import { bestFirstSearch } from '../path-finding-algorithms/best-first-search';
+import { AlgorithmResultObject, Algorithms } from '../types/algorithm-result';
 
 interface CellArrayWrapperProps {
   appState: AppStates;
@@ -15,6 +16,10 @@ interface CellArrayWrapperProps {
   reset: boolean;
   setReset: React.Dispatch<React.SetStateAction<boolean>>;
   setError: React.Dispatch<React.SetStateAction<Error | null>>;
+  algorithmResults: AlgorithmResultObject[];
+  setAlgorithmResult: React.Dispatch<React.SetStateAction<AlgorithmResultObject[]>>;
+  selectedAlgorithm: Algorithms | undefined;
+  setSelectedAlgorithm: React.Dispatch<React.SetStateAction<Algorithms | undefined>>;
 }
 
 const createDrawingArray = (): DrawingCellTypes[][] => {
@@ -47,12 +52,15 @@ const CellArrayWrapper: FC<CellArrayWrapperProps> = ({
   reset,
   setReset,
   setError,
+  algorithmResults,
+  setAlgorithmResult,
+  selectedAlgorithm,
+  setSelectedAlgorithm,
 }) => {
   const [drawingArray] = useState<DrawingCellTypes[][]>(createDrawingArray());
   const [visualizationArray, setVisualizationArray] = useState<VisualizationCellObject[][]>([]);
   const [start, setStart] = useState<Position | null>(null);
   const [end, setEnd] = useState<Position | null>(null);
-
   const [running, setRunning] = useState<boolean>(false);
 
   useEffect(() => {
@@ -76,61 +84,119 @@ const CellArrayWrapper: FC<CellArrayWrapperProps> = ({
     const runAlgorithms = async () => {
       if (appState === 'visualize' && visualizationArray.length > 0 && !running) {
         setRunning(true);
-        await breadthFirstSearch(
+        setAlgorithmResult((previousAlgorithmResults) => [
+          ...previousAlgorithmResults,
+          {
+            visualizationGrid: visualizationArray,
+            time: null,
+            algorithmName: 'Breadth First Search' as Algorithms,
+            key: uuidv4(),
+          },
+        ]);
+        setSelectedAlgorithm('Breadth First Search');
+        const bfsResult = await breadthFirstSearch(
           createVisualizationArray(drawingArray),
           setVisualizationArray,
           start as Position,
           end as Position,
+        );
+        setAlgorithmResult((previousAlgorithmResults) =>
+          [
+            ...previousAlgorithmResults.slice(0, -1),
+            {
+              visualizationGrid: bfsResult.visualizationArray,
+              time: bfsResult.time,
+              algorithmName: 'Breadth First Search' as Algorithms,
+              key: uuidv4(),
+            },
+          ].sort((a, b) => Number(a.time) - Number(b.time)),
         );
         await delay(2000);
-        await depthFirstSearch(
+        setAlgorithmResult((previousAlgorithmResults) => [
+          ...previousAlgorithmResults,
+          {
+            visualizationGrid: visualizationArray,
+            time: null,
+            algorithmName: 'Depth First Search' as Algorithms,
+            key: uuidv4(),
+          },
+        ]);
+        setSelectedAlgorithm('Depth First Search');
+        const dfsResult = await depthFirstSearch(
           createVisualizationArray(drawingArray),
           setVisualizationArray,
           start as Position,
           end as Position,
+        );
+        setAlgorithmResult((previousAlgorithmResults) =>
+          [
+            ...previousAlgorithmResults.slice(0, -1),
+            {
+              visualizationGrid: dfsResult.visualizationArray,
+              time: dfsResult.time,
+              algorithmName: 'Depth First Search' as Algorithms,
+              key: uuidv4(),
+            },
+          ].sort((a, b) => Number(a.time) - Number(b.time)),
         );
         await delay(2000);
-        await bestFirstSearch(
+        setAlgorithmResult((previousAlgorithmResults) => [
+          ...previousAlgorithmResults,
+          {
+            visualizationGrid: visualizationArray,
+            time: null,
+            algorithmName: 'Best First Search' as Algorithms,
+            key: uuidv4(),
+          },
+        ]);
+        setSelectedAlgorithm('Best First Search');
+        const bestfsResult = await bestFirstSearch(
           createVisualizationArray(drawingArray),
           setVisualizationArray,
           start as Position,
           end as Position,
         );
+        setAlgorithmResult((previousAlgorithmResults) =>
+          [
+            ...previousAlgorithmResults.slice(0, -1),
+            {
+              visualizationGrid: bestfsResult.visualizationArray,
+              time: bestfsResult.time,
+              algorithmName: 'Best First Search' as Algorithms,
+              key: uuidv4(),
+            },
+          ].sort((a, b) => Number(a.time) - Number(b.time)),
+        );
+        await delay(2000);
+        setAppState('analyze');
       }
     };
 
     runAlgorithms();
-  }, [appState, drawingArray, end, running, start, visualizationArray]);
+  }, [
+    algorithmResults,
+    appState,
+    drawingArray,
+    end,
+    running,
+    setAlgorithmResult,
+    setAppState,
+    setSelectedAlgorithm,
+    start,
+    visualizationArray,
+  ]);
 
   useEffect(() => {
-    const runAlgorithms = async () => {
-      if (appState === 'visualize' && visualizationArray.length > 0 && !running) {
-        setRunning(true);
-        await breadthFirstSearch(
-          createVisualizationArray(drawingArray),
-          setVisualizationArray,
-          start as Position,
-          end as Position,
-        );
-        await delay(2000);
-        await depthFirstSearch(
-          createVisualizationArray(drawingArray),
-          setVisualizationArray,
-          start as Position,
-          end as Position,
-        );
-        await delay(2000);
-        await bestFirstSearch(
-          createVisualizationArray(drawingArray),
-          setVisualizationArray,
-          start as Position,
-          end as Position,
-        );
+    if (appState === 'analyze') {
+      const algorithmResult = algorithmResults.find(
+        (obj) => obj.algorithmName === selectedAlgorithm,
+      );
+      if (algorithmResult?.visualizationGrid) {
+        console.log(algorithmResult.visualizationGrid);
+        setVisualizationArray(algorithmResult.visualizationGrid);
       }
-    };
-
-    runAlgorithms();
-  }, [appState, drawingArray, end, running, start, visualizationArray]);
+    }
+  }, [algorithmResults, appState, selectedAlgorithm]);
 
   return (
     <>
@@ -143,7 +209,7 @@ const CellArrayWrapper: FC<CellArrayWrapperProps> = ({
           setEnd={setEnd}
         ></CellArrayDraw>
       )}
-      {appState === 'visualize' && (
+      {(appState === 'visualize' || appState === 'analyze') && (
         <CellArrayVisualize visualizationArray={visualizationArray}></CellArrayVisualize>
       )}
     </>
