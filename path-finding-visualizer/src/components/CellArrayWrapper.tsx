@@ -23,7 +23,7 @@ interface CellArrayWrapperProps {
 }
 
 const createDrawingArray = (): DrawingCellTypes[][] => {
-  return new Array(25).fill(null).map(() => new Array(35).fill('empty'));
+  return new Array(40).fill(null).map(() => new Array(60).fill('empty'));
 };
 
 const createVisualizationArray = (
