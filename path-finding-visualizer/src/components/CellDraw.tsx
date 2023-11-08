@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Box, useMediaQuery } from '@mui/material';
 import { FC, useContext, useEffect, useState } from 'react';
 import { EditStateContext } from '../App';
 import { Position } from './CellArrayDraw';
@@ -40,7 +40,12 @@ const CellDraw: FC<CellDrawProps> = ({
 }) => {
   const editState = useContext(EditStateContext);
   const [color, setColor] = useState(getColor(drawingArray[rowNum][colNum]));
-  const dimension = 30;
+
+  const isExtraSmall = useMediaQuery('(max-width:  1375px)');
+  const isSmall = useMediaQuery('(min-width: 1376px) and (max-width:  1450px)');
+  const isMedium = useMediaQuery('(min-width: 1451px) and (max-width:  1525px)');
+  const isLarge = useMediaQuery('(min-width: 1526px) and (max-width:  1600px)');
+  const isExtraLarge = useMediaQuery('(min-width:  1601px)');
 
   useEffect(() => {
     setColor(getColor(drawingArray[rowNum][colNum]));
@@ -113,20 +118,103 @@ const CellDraw: FC<CellDrawProps> = ({
   };
 
   return (
-    <Box
-      onClick={() => updateColorOnClick()}
-      onMouseEnter={() => {
-        updateColorOnEnter();
-      }}
-      sx={{
-        width: dimension,
-        height: dimension,
-        backgroundColor: color,
-        '&:hover': {
-          opacity: [0.9, 0.8, 0.7],
-        },
-      }}
-    />
+    <div>
+      {isExtraSmall && (
+        <Box
+          onClick={() => updateColorOnClick()}
+          onMouseEnter={() => {
+            updateColorOnEnter();
+          }}
+          sx={{
+            width: 15,
+            height: 15,
+            backgroundColor: color,
+            '&:hover': {
+              opacity: [0.9, 0.8, 0.7],
+            },
+          }}
+        />
+      )}
+      {isSmall && (
+        <Box
+          onClick={() => updateColorOnClick()}
+          onMouseEnter={() => {
+            updateColorOnEnter();
+          }}
+          sx={{
+            width: 16,
+            height: 16,
+            backgroundColor: color,
+            '&:hover': {
+              opacity: [0.9, 0.8, 0.7],
+            },
+          }}
+        />
+      )}
+      {isMedium && (
+        <Box
+          onClick={() => updateColorOnClick()}
+          onMouseEnter={() => {
+            updateColorOnEnter();
+          }}
+          sx={{
+            width: 17,
+            height: 17,
+            backgroundColor: color,
+            '&:hover': {
+              opacity: [0.9, 0.8, 0.7],
+            },
+          }}
+        />
+      )}
+      {isLarge && (
+        <Box
+          onClick={() => updateColorOnClick()}
+          onMouseEnter={() => {
+            updateColorOnEnter();
+          }}
+          sx={{
+            width: 18,
+            height: 18,
+            backgroundColor: color,
+            '&:hover': {
+              opacity: [0.9, 0.8, 0.7],
+            },
+          }}
+        />
+      )}
+      {isExtraLarge && (
+        <Box
+          onClick={() => updateColorOnClick()}
+          onMouseEnter={() => {
+            updateColorOnEnter();
+          }}
+          sx={{
+            width: 20,
+            height: 20,
+            backgroundColor: color,
+            '&:hover': {
+              opacity: [0.9, 0.8, 0.7],
+            },
+          }}
+        />
+      )}
+    </div>
+
+    // <Box
+    //   onClick={() => updateColorOnClick()}
+    //   onMouseEnter={() => {
+    //     updateColorOnEnter();
+    //   }}
+    //   sx={{
+    //     width: dimension,
+    //     height: dimension,
+    //     backgroundColor: color,
+    //     '&:hover': {
+    //       opacity: [0.9, 0.8, 0.7],
+    //     },
+    //   }}
+    // />
   );
 };
 

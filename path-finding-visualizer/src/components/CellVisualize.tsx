@@ -6,7 +6,7 @@ interface CellVisualizeProps {
 }
 
 const CellVisualize: FC<CellVisualizeProps> = ({ visualizeCellColor }) => {
-  const dimension = 30;
+  const dimension = 15;
 
   return (
     <Box
