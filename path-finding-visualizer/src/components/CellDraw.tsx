@@ -200,21 +200,6 @@ const CellDraw: FC<CellDrawProps> = ({
         />
       )}
     </div>
-
-    // <Box
-    //   onClick={() => updateColorOnClick()}
-    //   onMouseEnter={() => {
-    //     updateColorOnEnter();
-    //   }}
-    //   sx={{
-    //     width: dimension,
-    //     height: dimension,
-    //     backgroundColor: color,
-    //     '&:hover': {
-    //       opacity: [0.9, 0.8, 0.7],
-    //     },
-    //   }}
-    // />
   );
 };
 
