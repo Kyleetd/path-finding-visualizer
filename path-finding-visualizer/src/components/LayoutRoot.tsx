@@ -5,7 +5,7 @@ const LayoutRoot = styled('div')(() => ({
   display: 'flex',
   height: '100vh',
   maxWidth: '100%',
-  marginLeft: SIDE_NAV_WIDTH,
+  marginLeft: SIDE_NAV_WIDTH + 50,
   alignItems: 'center',
   justifyContent: 'center',
   backgroundColor: 'lightgrey',
