@@ -83,6 +83,11 @@ const SideNav: FC<SideNavProps> = ({
           }}
           sx={{
             height: '48px',
+            backgroundColor: '#2196f3',
+            '&:disabled': {
+              color: 'white',
+              backgroundColor: '#5D5D5D',
+            },
           }}
         >
           Start
@@ -95,12 +100,12 @@ const SideNav: FC<SideNavProps> = ({
           }}
           sx={{
             height: '48px',
+            backgroundColor: '#2196f3',
           }}
         >
           Reset
         </Button>
         <ToggleButtonGroup
-          color="primary"
           value={editState}
           exclusive
           onChange={handleChange}
@@ -108,12 +113,57 @@ const SideNav: FC<SideNavProps> = ({
           disabled={appState !== 'draw'}
           sx={{
             height: '48px',
+            backgroundColor: '#2196f3',
           }}
         >
-          <ToggleButton value="start">Add Start</ToggleButton>
-          <ToggleButton value="end">Add End</ToggleButton>
-          <ToggleButton value="draw wall">Draw Wall</ToggleButton>
-          <ToggleButton value="erase wall">Erase Wall</ToggleButton>
+          <ToggleButton
+            value="start"
+            sx={{
+              color: 'white',
+              '&:disabled': {
+                color: 'white',
+                backgroundColor: '#5D5D5D',
+              },
+            }}
+          >
+            Add Start
+          </ToggleButton>
+          <ToggleButton
+            value="end"
+            sx={{
+              color: 'white',
+              '&:disabled': {
+                color: 'white',
+                backgroundColor: '#5D5D5D',
+              },
+            }}
+          >
+            Add End
+          </ToggleButton>
+          <ToggleButton
+            value="draw wall"
+            sx={{
+              color: 'white',
+              '&:disabled': {
+                color: 'white',
+                backgroundColor: '#5D5D5D',
+              },
+            }}
+          >
+            Draw Wall
+          </ToggleButton>
+          <ToggleButton
+            value="erase wall"
+            sx={{
+              color: 'white',
+              '&:disabled': {
+                color: 'white',
+                backgroundColor: '#5D5D5D',
+              },
+            }}
+          >
+            Erase Wall
+          </ToggleButton>
         </ToggleButtonGroup>
         {algorithmResults.length > 0 && <Divider />}
         {algorithmResults.map((algorithmResult, index) => (
@@ -125,8 +175,10 @@ const SideNav: FC<SideNavProps> = ({
             disabled={appState !== 'analyze'}
             sx={{
               height: '48px',
+              backgroundColor: '#2196f3',
               '&:disabled': {
                 color: 'white',
+                backgroundColor: '#5D5D5D',
               },
             }}
             style={
