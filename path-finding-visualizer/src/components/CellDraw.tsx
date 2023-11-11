@@ -126,8 +126,8 @@ const CellDraw: FC<CellDrawProps> = ({
             updateColorOnEnter();
           }}
           sx={{
-            width: 15,
-            height: 15,
+            width: 20,
+            height: 20,
             backgroundColor: color,
             '&:hover': {
               opacity: [0.9, 0.8, 0.7],
@@ -142,8 +142,8 @@ const CellDraw: FC<CellDrawProps> = ({
             updateColorOnEnter();
           }}
           sx={{
-            width: 16,
-            height: 16,
+            width: 21,
+            height: 21,
             backgroundColor: color,
             '&:hover': {
               opacity: [0.9, 0.8, 0.7],
@@ -158,8 +158,8 @@ const CellDraw: FC<CellDrawProps> = ({
             updateColorOnEnter();
           }}
           sx={{
-            width: 17,
-            height: 17,
+            width: 22,
+            height: 22,
             backgroundColor: color,
             '&:hover': {
               opacity: [0.9, 0.8, 0.7],
@@ -174,8 +174,8 @@ const CellDraw: FC<CellDrawProps> = ({
             updateColorOnEnter();
           }}
           sx={{
-            width: 18,
-            height: 18,
+            width: 23,
+            height: 23,
             backgroundColor: color,
             '&:hover': {
               opacity: [0.9, 0.8, 0.7],
@@ -190,8 +190,8 @@ const CellDraw: FC<CellDrawProps> = ({
             updateColorOnEnter();
           }}
           sx={{
-            width: 20,
-            height: 20,
+            width: 25,
+            height: 25,
             backgroundColor: color,
             '&:hover': {
               opacity: [0.9, 0.8, 0.7],
