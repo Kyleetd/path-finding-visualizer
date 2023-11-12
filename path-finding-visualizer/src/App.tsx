@@ -16,6 +16,7 @@ function App() {
   const [error, setError] = useState<Error | null>(null);
   const [algorithmResults, setAlgorithmResults] = useState<AlgorithmResultObject[]>([]);
   const [selectedAlgorithm, setSelectedAlgorithm] = useState<Algorithms>();
+  const [algorithmsToRun, setAlgorithmsToRun] = useState<Algorithms[]>([]);
 
   const isMediumScreen = useMediaQuery('(min-width: 1300px)');
 
@@ -35,6 +36,8 @@ function App() {
               algorithmResults={algorithmResults}
               selectedAlgorithm={selectedAlgorithm}
               setSelectedAlgorithm={setSelectedAlgorithm}
+              algorithmsToRun={algorithmsToRun}
+              setAlgorithmsToRun={setAlgorithmsToRun}
             />
             <LayoutRoot>
               <EditStateContext.Provider value={editState}>
@@ -48,6 +51,7 @@ function App() {
                   setAlgorithmResult={setAlgorithmResults}
                   selectedAlgorithm={selectedAlgorithm}
                   setSelectedAlgorithm={setSelectedAlgorithm}
+                  algorithmsToRun={algorithmsToRun}
                 />
               </EditStateContext.Provider>
             </LayoutRoot>
