@@ -63,7 +63,12 @@ const MultipleSelectChip: FC<MultipleSelectChipProps> = ({
   return (
     <div>
       <FormControl sx={{ m: 1, width: 300 }}>
-        <InputLabel id="demo-multiple-chip-label">Select Algorithms</InputLabel>
+        <InputLabel
+          id="demo-multiple-chip-label"
+          sx={{ color: 'white' }}
+        >
+          Select Algorithms
+        </InputLabel>
         <Select
           labelId="demo-multiple-chip-label"
           id="demo-multiple-chip"
@@ -75,6 +80,7 @@ const MultipleSelectChip: FC<MultipleSelectChipProps> = ({
             <OutlinedInput
               id="select-multiple-chip"
               label="Select Algorithms"
+              sx={{ borderColor: 'white' }}
             />
           }
           renderValue={(selected) => (
@@ -83,6 +89,9 @@ const MultipleSelectChip: FC<MultipleSelectChipProps> = ({
                 <Chip
                   key={value}
                   label={value}
+                  sx={{
+                    color: 'white',
+                  }}
                 />
               ))}
             </Box>
