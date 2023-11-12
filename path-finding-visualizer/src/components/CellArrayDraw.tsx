@@ -1,6 +1,6 @@
 import { Grid } from '@mui/material';
 import CellDraw from './CellDraw';
-import { FC } from 'react';
+import { FC, useState, useEffect } from 'react';
 import { DrawingCellTypes } from '../types/cell-types';
 
 export type Position = {
@@ -17,6 +17,26 @@ interface CellArrayDrawProps {
 }
 
 const CellArrayDraw: FC<CellArrayDrawProps> = ({ drawingArray, start, setStart, end, setEnd }) => {
+  const [mouseDown, setMouseDown] = useState<boolean>(false);
+
+  useEffect(() => {
+    const handleMouseDown = () => {
+      setMouseDown((previousMouseState) => !previousMouseState);
+    };
+
+    const handleMouseUp = () => {
+      setMouseDown((previousMouseState) => !previousMouseState);
+    };
+
+    document.addEventListener('mousedown', handleMouseDown);
+    document.addEventListener('mouseup', handleMouseUp);
+
+    return () => {
+      document.removeEventListener('mousedown', handleMouseDown);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, []);
+
   return (
     <Grid
       container
@@ -50,6 +70,7 @@ const CellArrayDraw: FC<CellArrayDrawProps> = ({ drawingArray, start, setStart, 
                 setStart={setStart}
                 end={end}
                 setEnd={setEnd}
+                mouseDown={mouseDown}
               ></CellDraw>
             </Grid>
           ))}

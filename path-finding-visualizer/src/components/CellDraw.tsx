@@ -12,6 +12,7 @@ interface CellDrawProps {
   setStart: React.Dispatch<React.SetStateAction<Position | null>>;
   end: Position | null;
   setEnd: React.Dispatch<React.SetStateAction<Position | null>>;
+  mouseDown: boolean;
 }
 
 const getColor = (cellType: DrawingCellTypes) => {
@@ -37,6 +38,7 @@ const CellDraw: FC<CellDrawProps> = ({
   setStart,
   end,
   setEnd,
+  mouseDown,
 }) => {
   const editState = useContext(EditStateContext);
   const [color, setColor] = useState(getColor(drawingArray[rowNum][colNum]));
@@ -91,19 +93,26 @@ const CellDraw: FC<CellDrawProps> = ({
           drawingArray[rowNum][colNum] = 'end';
         }
         break;
-      case 'draw wall':
-        setColor('black');
-        drawingArray[rowNum][colNum] = 'wall';
-        break;
-      case 'erase wall':
-        setColor('gray');
-        drawingArray[rowNum][colNum] = 'empty';
-        break;
       default:
         throw new Error('Invalid Edit State');
     }
   };
+
   const updateColorOnEnter = () => {
+    if (editState === 'draw wall' && mouseDown) {
+      if (color === 'gray') {
+        setColor('black');
+        drawingArray[rowNum][colNum] = 'wall';
+      }
+    } else if (editState === 'erase wall' && mouseDown) {
+      if (color === 'black') {
+        setColor('gray');
+        drawingArray[rowNum][colNum] = 'empty';
+      }
+    }
+  };
+
+  const updateColorOnDown = () => {
     if (editState === 'draw wall') {
       if (color === 'gray') {
         setColor('black');
@@ -125,13 +134,18 @@ const CellDraw: FC<CellDrawProps> = ({
           onMouseEnter={() => {
             updateColorOnEnter();
           }}
+          onMouseDown={() => {
+            updateColorOnDown();
+          }}
           sx={{
-            width: 20,
-            height: 20,
+            width: 18.5,
+            height: 18.5,
             backgroundColor: color,
             '&:hover': {
               opacity: [0.9, 0.8, 0.7],
             },
+            userDrag: 'none',
+            userSelect: 'none',
           }}
         />
       )}
@@ -141,13 +155,18 @@ const CellDraw: FC<CellDrawProps> = ({
           onMouseEnter={() => {
             updateColorOnEnter();
           }}
+          onMouseDown={() => {
+            updateColorOnDown();
+          }}
           sx={{
-            width: 21,
-            height: 21,
+            width: 20,
+            height: 20,
             backgroundColor: color,
             '&:hover': {
               opacity: [0.9, 0.8, 0.7],
             },
+            userDrag: 'none',
+            userSelect: 'none',
           }}
         />
       )}
@@ -157,13 +176,18 @@ const CellDraw: FC<CellDrawProps> = ({
           onMouseEnter={() => {
             updateColorOnEnter();
           }}
+          onMouseDown={() => {
+            updateColorOnDown();
+          }}
           sx={{
-            width: 22,
-            height: 22,
+            width: 21.5,
+            height: 21.5,
             backgroundColor: color,
             '&:hover': {
               opacity: [0.9, 0.8, 0.7],
             },
+            userDrag: 'none',
+            userSelect: 'none',
           }}
         />
       )}
@@ -173,6 +197,9 @@ const CellDraw: FC<CellDrawProps> = ({
           onMouseEnter={() => {
             updateColorOnEnter();
           }}
+          onMouseDown={() => {
+            updateColorOnDown();
+          }}
           sx={{
             width: 23,
             height: 23,
@@ -180,6 +207,8 @@ const CellDraw: FC<CellDrawProps> = ({
             '&:hover': {
               opacity: [0.9, 0.8, 0.7],
             },
+            userDrag: 'none',
+            userSelect: 'none',
           }}
         />
       )}
@@ -189,13 +218,18 @@ const CellDraw: FC<CellDrawProps> = ({
           onMouseEnter={() => {
             updateColorOnEnter();
           }}
+          onMouseDown={() => {
+            updateColorOnDown();
+          }}
           sx={{
-            width: 25,
-            height: 25,
+            width: 24.5,
+            height: 24.5,
             backgroundColor: color,
             '&:hover': {
               opacity: [0.9, 0.8, 0.7],
             },
+            userDrag: 'none',
+            userSelect: 'none',
           }}
         />
       )}
