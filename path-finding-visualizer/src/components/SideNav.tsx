@@ -12,6 +12,7 @@ import { EditTypes } from '../types/edit-types';
 import { FC, useEffect } from 'react';
 import { AppStates } from '../types/app-state-types';
 import { AlgorithmResultObject, Algorithms } from '../types/algorithm-result';
+import MultipleSelectChip from './MuiChipSelect';
 
 export const SIDE_NAV_WIDTH = 300;
 
@@ -26,6 +27,8 @@ interface SideNavProps {
   algorithmResults: AlgorithmResultObject[];
   selectedAlgorithm: Algorithms | undefined;
   setSelectedAlgorithm: React.Dispatch<React.SetStateAction<Algorithms | undefined>>;
+  algorithmsToRun: Algorithms[];
+  setAlgorithmsToRun: React.Dispatch<React.SetStateAction<Algorithms[]>>;
 }
 
 const SideNav: FC<SideNavProps> = ({
@@ -39,6 +42,8 @@ const SideNav: FC<SideNavProps> = ({
   algorithmResults,
   selectedAlgorithm,
   setSelectedAlgorithm,
+  algorithmsToRun,
+  setAlgorithmsToRun,
 }) => {
   useEffect(() => {
     if (error) {
@@ -92,6 +97,11 @@ const SideNav: FC<SideNavProps> = ({
         >
           Start
         </Button>
+        <MultipleSelectChip
+          algorithmsToRun={algorithmsToRun}
+          setAlgorithmsToRun={setAlgorithmsToRun}
+          appState={appState}
+        />
         <Button
           variant="contained"
           onClick={() => {
