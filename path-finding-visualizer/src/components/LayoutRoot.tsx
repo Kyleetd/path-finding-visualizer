@@ -9,6 +9,8 @@ const LayoutRoot = styled('div')(() => ({
   alignItems: 'center',
   justifyContent: 'center',
   backgroundColor: 'lightgrey',
+  userDrag: 'none',
+  userSelect: 'none',
 }));
 
 export default LayoutRoot;

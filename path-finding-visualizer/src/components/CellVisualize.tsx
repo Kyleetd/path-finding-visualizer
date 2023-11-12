@@ -17,8 +17,8 @@ const CellVisualize: FC<CellVisualizeProps> = ({ visualizeCellColor }) => {
       {isExtraSmall && (
         <Box
           sx={{
-            width: 20,
-            height: 20,
+            width: 18.5,
+            height: 18.5,
             backgroundColor: visualizeCellColor,
           }}
         />
@@ -26,8 +26,8 @@ const CellVisualize: FC<CellVisualizeProps> = ({ visualizeCellColor }) => {
       {isSmall && (
         <Box
           sx={{
-            width: 21,
-            height: 21,
+            width: 20,
+            height: 20,
             backgroundColor: visualizeCellColor,
           }}
         />
@@ -35,8 +35,8 @@ const CellVisualize: FC<CellVisualizeProps> = ({ visualizeCellColor }) => {
       {isMedium && (
         <Box
           sx={{
-            width: 22,
-            height: 22,
+            width: 21.5,
+            height: 21.5,
             backgroundColor: visualizeCellColor,
           }}
         />
@@ -53,8 +53,8 @@ const CellVisualize: FC<CellVisualizeProps> = ({ visualizeCellColor }) => {
       {isExtraLarge && (
         <Box
           sx={{
-            width: 25,
-            height: 25,
+            width: 24.5,
+            height: 24.5,
             backgroundColor: visualizeCellColor,
           }}
         />
